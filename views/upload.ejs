@@ -1,0 +1,46 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>File Uploads</title>
+    <link rel="stylesheet" href="/css/base.css">
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelector('input[type="file"]').addEventListener('change', function() {
+            //var file = this.files[0];
+            var files = Array.prototype.slice.call(this.files);
+
+            var formdata = new FormData();
+            var nina = {
+                name: 'Nina'
+            }
+            formdata.append('Nina', JSON.stringify(nina));
+            //formdata.append('somefile', file);
+
+            files.forEach(function (file, index){
+                formdata.append('file' + index, file);
+            });
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('post', '/uploads');
+
+            var progressBar = document.querySelector('progress');
+
+            xhr.upload.addEventListener('progress', function(event) {
+                console.log(event);
+                progressBar.setAttribute('value', ~~(event.loaded / event.total * 100));
+            })
+
+            xhr.send(formdata);
+        });
+    });
+
+</script>
+</head>
+<body>
+<progress value="22" max="100"></progress>
+<form action="/uploads" method="post">
+    <input type="file" multiple/>
+</form>
+</body>
+</html>

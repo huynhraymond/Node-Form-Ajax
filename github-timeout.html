@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script>
+        var xhr = new XMLHttpRequest();
+        //console.log(xhr.readyState);
+
+        var intervals = [];
+
+        var start = new Date();
+        console.log('Starting: ' + start);
+
+        xhr.timeout = 300;
+
+        xhr.open('get', 'https://api.github.com/search/repositories?q=cassandra');
+        xhr.addEventListener('readystatechange', function() {
+            console.log(xhr.readyState);
+            switch (xhr.readyState) {
+                case 2:
+                    intervals.push(new Date() - start);
+                    console.log('State 2: ' + intervals[0]);
+                    break;
+
+                case 4:
+                    intervals.push(new Date() - start - intervals[0]);
+                    console.log(intervals);
+                    console.log('State 4: ' + (new Date() - start));
+                    break;
+            }
+        });
+
+        // Handle timeout event
+        xhr.addEventListener('timeout', function() {
+            console.log('REQUEST ABORTED: Request executed time: ', xhr.timeout, 'ms');
+        });
+
+        xhr.send();
+    </script>
+</head>
+<body>
+
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/css/style.css' />
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelector('button').addEventListener('click', function() {
+                // create JSON object
+                var form = document.forms.user;
+                var jsonData = {
+                    name: form.name.value,
+                    email: form.email.value
+                }
+
+                //ajax(JSON.stringify(jsonData), 'application/json');
+                //ajax(jsonToFormUrlEncoded(jsonData), 'application/x-www-form-urlencoded');
+            });
+        });
+
+        function ajax( str, contentType) {
+          var xhr = new XMLHttpRequest();
+          xhr.open('post', '/contacts');
+          xhr.setRequestHeader('accept', 'application/json');
+          xhr.setRequestHeader('content-type', contentType);
+          xhr.send(str);
+        }
+
+        function jsonToXML(obj) {
+
+        }
+
+        function jsonToFormUrlEncoded( obj ) {
+            return Object.keys(obj).map(function(prop) {
+                return encodeURIComponent(prop) + '=' + encodeURIComponent(obj[prop]);
+            }).join('&');
+        }
+
+    </script>
+  </head>
+
+  <body>
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title %></p>
+
+    <form name='user' action="/contacts" method="post">
+      <input type="text" name="name">
+      <input type="text" name="email">
+      <input type="submit" value="Submit Form" />
+    </form>
+    <button>AJAX Call</button>
+  </body>
+</html>
